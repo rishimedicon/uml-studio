@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UML Studio AI
 
-## Getting Started
+AI-assisted UML modeling: from natural-language requirements to coherent, editable, validated UML models.
+Grounded in Booch's object-oriented design principles and OMG UML 2.x semantics.
 
-First, run the development server:
+This is the Phase 1 + basic AI MVP.
+
+## Features
+
+- **Diagrams:** class, use case, sequence and activity.
+- **Model/view separation:** a typed UML model (`src/lib/uml/types.ts`) is the source of truth. The canvas only renders it, and moving shapes changes layout, not semantics.
+- **Editor:** React Flow canvas with UML notation (generalization, realization, aggregation, composition, dependency, include/extend, guards, multiplicities, roles). There is also a dedicated SVG sequence-diagram renderer with activation bars. Includes a palette, properties panel, auto-layout (TB/LR), undo/redo (Ctrl+Z / Ctrl+Shift+Z) and a simplified/detailed class view.
+- **Validation:** live errors, warnings and suggestions. Covers endpoint compatibility, multiplicity syntax, inheritance cycles, unresolved types, encapsulation, use case coverage, sequence reply matching, activity initial/final/fork/join/decision rules and reachability. Click an issue to select the element.
+- **AI:** generate a diagram from a prompt plus project requirements, or refine the current one. Uses structured output that is validated with Zod. Refinement keeps element identity and positions, and a report shows added, removed, modified and dropped content. Assumptions are tagged explicit, inferred, question or recommendation, and you can accept or reject each one. A failed generation never replaces your diagram.
+- **Persistence:** projects autosave in browser localStorage. JSON project import/export.
+- **Export:** PNG, SVG, PlantUML (`.puml`, with any notation losses reported), and diagram model JSON.
+
+## Running locally
+
+Requires Node 20+.
 
 ```bash
+npm install
+cp .env.example .env.local   # add an API key to enable AI
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Variable | Purpose |
+| --- | --- |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` | Enables AI generation (server-side only) |
+| `AI_PROVIDER` | Optional: `openai` or `anthropic` when both keys are set |
+| `AI_MODEL` | Optional model override |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Without a key, everything except AI generation works, and each project can start from example diagrams.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+`npm run dev` · `npm run build` · `npm test` (Vitest model/validation tests) · `npm run lint` · `npm run typecheck`
 
-To learn more about Next.js, take a look at the following resources:
+## Not yet implemented
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The remaining 10 UML diagram types, accounts/database storage, collaboration, versioning and XMI import/export are later phases of the SRS.
