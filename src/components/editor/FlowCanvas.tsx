@@ -9,7 +9,6 @@ import {
   MiniMap,
   ReactFlow,
   getNodesBounds,
-  getViewportForBounds,
   useEdgesState,
   useNodesState,
   useReactFlow,
@@ -213,11 +212,10 @@ export const FlowCanvas = forwardRef<CanvasHandle, Props>(function FlowCanvas(
         const pad = 40;
         const width = Math.ceil(bounds.width + pad * 2);
         const height = Math.ceil(bounds.height + pad * 2);
-        const vp = getViewportForBounds(bounds, width, height, 0.1, 2, pad);
         return exportElementImage(viewport, format, {
           width,
           height,
-          transform: `translate(${vp.x}px, ${vp.y}px) scale(${vp.zoom})`,
+          transform: `translate(${pad - bounds.x}px, ${pad - bounds.y}px) scale(1)`,
         });
       },
       fit: () => rf.fitView({ padding: 0.15, duration: 200 }),

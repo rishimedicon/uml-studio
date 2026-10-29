@@ -137,7 +137,7 @@ export const SequenceView = forwardRef<SequenceHandle, Props>(function SequenceV
             const c = color(l.id, "element");
             return (
               <g key={l.id} className="cursor-pointer" onClick={(e) => { e.stopPropagation(); onSelect({ type: "element", id: l.id }); }}>
-                <line x1={x} y1={headY + HEAD_H} x2={x} y2={L.end} stroke="#64748b" strokeDasharray="6 5" />
+                <line x1={x} y1={l.participantType === "actor" ? headY + 54 : headY + HEAD_H} x2={x} y2={L.end} stroke="#64748b" strokeDasharray="6 5" />
                 {l.participantType === "actor" ? (
                   <g transform={`translate(${x - 12}, ${headY - 14})`} stroke={c} strokeWidth="1.5" fill="#fff">
                     <circle cx="12" cy="8" r="7" />
